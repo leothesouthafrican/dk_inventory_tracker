@@ -67,6 +67,3 @@ if product_csv and stock_levels_csv:
     st.plotly_chart(plot_total_value_per_category(current_df), use_container_width=True)
     st.markdown("---")
     st.plotly_chart(plot_unrealised_value_per_category(current_df), use_container_width=True)
-
-
-

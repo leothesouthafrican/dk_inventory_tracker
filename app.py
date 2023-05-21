@@ -54,7 +54,9 @@ if product_csv and stock_levels_csv:
     merged_df["QuantityChange"] = merged_df["Quantity_x"] - merged_df["Quantity_y"]
     merged_df = merged_df[["ProductCode", "Quantity_x", "Quantity_y", "QuantityChange", "Name_x", "Category_x", "AverageCost_x", "PriceTier1_x", "PriceTier2_x", "PriceTier3_x", "PriceTier4_x", "PriceTier5_x"]]
     merged_df = merged_df.rename(columns={"Quantity_x": "CurrentQuantity", "Quantity_y": "PreviousQuantity", "Name_x": "Name", "Category_x": "Category", "AverageCost_x": "AverageCost", "PriceTier1_x": "PriceTier1", "PriceTier2_x": "PriceTier2", "PriceTier3_x": "PriceTier3", "PriceTier4_x": "PriceTier4", "PriceTier5_x": "PriceTier5"})
-
+    
+    #Saving the merged file to a new table in the database
+    merged_df.to_sql(f"merged_data_{CURRENT_DATE}", "sqlite:///inventory_data.db", if_exists="replace", index=False)
 
 # ----------------------------------------------------
 #               Plotting Current Data

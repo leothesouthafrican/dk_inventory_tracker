@@ -1,7 +1,7 @@
 from datetime import datetime
 import streamlit as st
 import pandas as pd
-from graphing import plot_items_per_category, plot_quantity_per_category, plot_total_value_per_category, plot_unrealised_value_per_category
+from graphing import plot_items_per_category, plot_quantity_per_category, plot_total_value_per_category, plot_unrealised_value_per_category, plot_decreased_items, plot_gross_profit, plot_least_sold_categories
 from db_helper import get_table_names, load_df_from_db
 from data_cleaning import load_transform_save
 
@@ -67,3 +67,27 @@ if product_csv and stock_levels_csv:
     st.plotly_chart(plot_total_value_per_category(current_df), use_container_width=True)
     st.markdown("---")
     st.plotly_chart(plot_unrealised_value_per_category(current_df), use_container_width=True)
+    st.markdown("---")
+    st.header("Comparative Graphs")
+
+    #Number of ProductCodes to display
+    num_product_codes = st.slider('Number of Product Codes to Display', min_value=1, max_value=30, value=10)
+    # Only if there is a QuantityChange
+    if 'QuantityChange' in merged_df.columns:
+        st.plotly_chart(plot_decreased_items(merged_df, num_product_codes), use_container_width=True)
+
+    st.markdown("---")
+    # Number of ProductCodes to display for gross profit plot
+    num_product_codes_gross_profit = st.slider('Number of Product Codes to Display for Gross Profit', min_value=1, max_value = 30, value=10)
+
+    # Only if there is a GrossProfit
+    if 'QuantityChange' in merged_df.columns and 'PriceTier4' in merged_df.columns and 'AverageCost' in merged_df.columns:
+        st.plotly_chart(plot_gross_profit(merged_df, num_product_codes_gross_profit), use_container_width=True)
+
+    st.markdown("---")
+    # Number of categories to display for least sold categories plot
+    num_categories_least_sold = st.slider('Number of Categories to Display for Least Sold Categories', min_value=1, max_value=len(merged_df['Category'].unique()), value=10)
+
+    # Only if there is a QuantityChange
+    if 'QuantityChange' in merged_df.columns:
+        st.plotly_chart(plot_least_sold_categories(merged_df, num_categories_least_sold), use_container_width=True)

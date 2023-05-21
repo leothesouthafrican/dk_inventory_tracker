@@ -36,7 +36,7 @@ with st.sidebar:
     
     stock_levels_csv = st.file_uploader("Please Upload Updated Stock Levels CSV Export from DEAR Inventory.")
 
-    previous_data = st.selectbox("Select Previous Data", get_table_names("/Users/leo/Desktop/programming/dk_inventory_tracker/inventory_data.db"))
+    previous_data = st.selectbox("Select Previous Data", get_table_names("inventory_data.db"))
 
 # ----------------------------------------------------
 #                    Data Processing
